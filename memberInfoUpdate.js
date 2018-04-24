@@ -8,7 +8,7 @@ function memberInfoUpdate() {
     // 連想配列からキー値を用いて値を読み込む
     var answerSheetName = configHash["回答シート名"];
     var groupName = configHash["グループ名"];
-    var mailToGroup = configHash["送信先"];
+    var mailToGroup = configHash["グループ送信先"];
     var mailFrom = configHash["送信者"];
     var replyToAddress = configHash["返信先"];
     var bccAddress = configHash["bccアドレス"]; 
