@@ -43,10 +43,35 @@ function memberInfoUpdate() {
             memberValue = memberValue.replace(/[!-~]/g, function(tmpStr) {
             return String.fromCharCode( tmpStr.charCodeAt(0) + 0xFEE0 ); 
             }); 
+        } else if (headerValue === '郵便番号') {
+            var zipCode = memberValue;
+        } else if (headerValue === '都道府県') {
+            var prefecture = memberValue;
         }
         
         txtContents = txtContents + "[" + headerValue + "] " + memberValue + "\r\n";
         inputInfo = inputInfo + "[" + headerValue + "] " + memberValue + "<br/>";
+    }
+
+    // 国内住所で、郵便番号にハイフンが入っていない場合、ハイフンを足す
+    zipCode = zipCode.toString();
+    var zipCodeOrg = zipCode;
+    Logger.log(zipCode);
+    Logger.log(zipCode.length);
+    if(zipCode.indexOf("-") < 0 && zipCode.length < 7){
+        // 郵便番号が0ではじまる地域は0を足す
+        if (prefecture === "北海道" || prefecture === "青森" || prefecture === "秋田" || prefecture === "岩手"){
+            for(var k = zipCode.length + 1; k <= 7; k++){
+                zipCode = "0" + zipCode;
+            }
+            Logger.log(prefecture + " : " + zipCode);
+        }
+        if (prefecture !== "海外"){
+            zipCode = zipCode.substring(0,3) + "-" + zipCode.substring(3,7);
+            // 郵便番号テキストを置換
+            txtContents = txtContents.replace(zipCodeOrg, zipCode);
+            inputInfo = inputInfo.replace(zipCodeOrg, zipCode);
+        }
     }
 
     Logger.log(txtContents);
