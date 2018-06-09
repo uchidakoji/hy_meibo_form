@@ -58,7 +58,7 @@ function memberInfoUpdate() {
     var zipCodeOrg = zipCode;
     Logger.log(zipCode);
     Logger.log(zipCode.length);
-    if(zipCode.indexOf("-") < 0 && zipCode.length < 7){
+    if(zipCode.indexOf("-") < 0 && zipCode.length <= 7){
         // 郵便番号が0ではじまる地域は0を足す
         if (prefecture === "北海道" || prefecture === "青森" || prefecture === "秋田" || prefecture === "岩手"){
             for(var k = zipCode.length + 1; k <= 7; k++){
