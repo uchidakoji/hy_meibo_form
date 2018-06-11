@@ -47,6 +47,10 @@ function memberInfoUpdate() {
             var zipCode = memberValue;
         } else if (headerValue === '都道府県') {
             var prefecture = memberValue;
+        } else if (headerValue === '郵便番号2') {
+            var zipCode2 = memberValue;
+        } else if (headerValue === '都道府県2') {
+            var prefecture2 = memberValue;
         }
         
         txtContents = txtContents + "[" + headerValue + "] " + memberValue + "\r\n";
@@ -56,22 +60,19 @@ function memberInfoUpdate() {
     // 国内住所で、郵便番号にハイフンが入っていない場合、ハイフンを足す
     zipCode = zipCode.toString();
     var zipCodeOrg = zipCode;
-    Logger.log(zipCode);
-    Logger.log(zipCode.length);
-    if(zipCode.indexOf("-") < 0 && zipCode.length <= 7){
-        // 郵便番号が0ではじまる地域は0を足す
-        if (prefecture === "北海道" || prefecture === "青森" || prefecture === "秋田" || prefecture === "岩手"){
-            for(var k = zipCode.length + 1; k <= 7; k++){
-                zipCode = "0" + zipCode;
-            }
-            Logger.log(prefecture + " : " + zipCode);
-        }
-        if (prefecture !== "海外"){
-            zipCode = zipCode.substring(0,3) + "-" + zipCode.substring(3,7);
-            // 郵便番号テキストを置換
-            txtContents = txtContents.replace(zipCodeOrg, zipCode);
-            inputInfo = inputInfo.replace(zipCodeOrg, zipCode);
-        }
+    if (prefecture !== "海外" && zipCode.indexOf("-") < 0 && zipCode.length <= 7){
+        zipCode = modify_ZipCode(zipCode, prefecture);
+        txtContents = txtContents.replace(zipCodeOrg, zipCode);
+        inputInfo = inputInfo.replace(zipCodeOrg, zipCode);
+    }
+    
+    //国内第2住所が入力されている場合、同様の処理を行う
+    zipCode2 = zipCode2.toString();
+    var zipCode2Org = zipCode2;
+    if(prefecture2 !== "海外" && zipCode2 !== "" && zipCode2.indexOf("-") < 0 && zipCode2.length <= 7){
+        zipCode2 = modify_ZipCode(zipCode2, prefecture2);
+        txtContents = txtContents.replace(zipCode2Org, zipCode2);
+        inputInfo = inputInfo.replace(zipCode2Org, zipCode2);
     }
 
     Logger.log(txtContents);
@@ -112,4 +113,20 @@ function memberInfoUpdate() {
 
     updateSheet.getRange(lastRow, 1).setValue("yes")　//　処理が終わった行のA列に処理済みのフラグをたてる
 
+}
+
+/////
+function modify_ZipCode(zipCode, prefecture){
+    Logger.log(zipCode);
+    Logger.log(zipCode.length);
+    
+    // 郵便番号が0ではじまる地域は0を足す
+    if (prefecture === "北海道" || prefecture === "青森" || prefecture === "秋田" || prefecture === "岩手"){
+        for(var k = zipCode.length + 1; k <= 7; k++){
+            zipCode = "0" + zipCode;
+        }
+        Logger.log(prefecture + " : " + zipCode);
+    }
+    zipCode = zipCode.substring(0,3) + "-" + zipCode.substring(3,7);
+    return zipCode;
 }
