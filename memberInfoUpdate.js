@@ -80,7 +80,7 @@ function memberInfoUpdate() {
         inputInfo = inputInfo.replace(zipCode2Org, zipCode2);
     }
 
-    //国内住所で、電話番号がハイフン無しで入力されていない場合、0を先頭に足す
+    //国内住所で、電話番号がハイフン無しで入力されている場合、0を先頭に足す
     phoneNumber = phoneNumber.toString();
     var phoneNumberOrg = phoneNumber;
     if(phoneNumber.indexOf("-") < 0 && prefecture !== "海外" && phoneNumber.substr(0,1) !== "0"){
