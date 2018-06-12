@@ -43,14 +43,18 @@ function memberInfoUpdate() {
             memberValue = memberValue.replace(/[!-~]/g, function(tmpStr) {
             return String.fromCharCode( tmpStr.charCodeAt(0) + 0xFEE0 ); 
             }); 
-        } else if (headerValue === '郵便番号') {
+        } else if (headerValue === "郵便番号") {
             var zipCode = memberValue;
-        } else if (headerValue === '都道府県') {
+        } else if (headerValue === "都道府県") {
             var prefecture = memberValue;
-        } else if (headerValue === '郵便番号2') {
+        } else if (headerValue === "郵便番号2") {
             var zipCode2 = memberValue;
-        } else if (headerValue === '都道府県2') {
+        } else if (headerValue === "都道府県2") {
             var prefecture2 = memberValue;
+        } else if (headerValue === "電話番号") {
+            var phoneNumber = memberValue;
+        } else if (headerValue === "電話番号2") {
+            var phoneNumber2 = memberValue
         }
         
         txtContents = txtContents + "[" + headerValue + "] " + memberValue + "\r\n";
@@ -58,6 +62,7 @@ function memberInfoUpdate() {
     }
 
     // 国内住所で、郵便番号にハイフンが入っていない場合、ハイフンを足す
+    // 郵便番号が0から始まる地域の場合、0を足す
     zipCode = zipCode.toString();
     var zipCodeOrg = zipCode;
     if (prefecture !== "海外" && zipCode.indexOf("-") < 0 && zipCode.length <= 7){
@@ -73,6 +78,24 @@ function memberInfoUpdate() {
         zipCode2 = modify_ZipCode(zipCode2, prefecture2);
         txtContents = txtContents.replace(zipCode2Org, zipCode2);
         inputInfo = inputInfo.replace(zipCode2Org, zipCode2);
+    }
+
+    //国内住所で、電話番号がハイフン無しで入力されていない場合、0を先頭に足す
+    phoneNumber = phoneNumber.toString();
+    var phoneNumberOrg = phoneNumber;
+    if(phoneNumber.indexOf("-") < 0 && prefecture !== "海外" && phoneNumber.substr(0,1) !== "0"){
+        phoneNumber = "0" + phoneNumber;
+        txtContents = txtContents.replace(phoneNumberOrg, phoneNumber);
+        inputInfo = inputInfo.replace(phoneNumberOrg, phoneNumber);
+    }
+
+    //国内第2住所の電話番号が入力されている場合、同様の処理を行う
+    phoneNumber2 = phoneNumber2.toString();
+    var phoneNumber2Org = phoneNumber2;
+    if(phoneNumber2.indexOf("-") < 0 && prefecture2 !== "海外" && phoneNumber2.substr(0,1) !== "0"){
+        phoneNumber2 = "0" + phoneNumber2;
+        txtContents = txtContents.replace(phoneNumber2Org, phoneNumber2);
+        inputInfo = inputInfo.replace(phoneNumber2Org, phoneNumber2);
     }
 
     Logger.log(txtContents);
