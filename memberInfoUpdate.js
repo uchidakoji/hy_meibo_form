@@ -40,6 +40,7 @@ function memberInfoUpdate() {
         } else if ( (headerValue.indexOf("市町村番地") === 0) || (headerValue.indexOf("マンション") === 0) ) {
             // 市町村番地・マンション項目に入力されている半角英数字記号を全角に変換
             // 参考:https://nj-clucker.com/change-double-byte-to-half-width/　または　https://qiita.com/yamikoo@github/items/5dbcc77b267a549bdbae
+            memberValue = memberValue.toString();
             memberValue = memberValue.replace(/[!-~]/g, function(tmpStr) {
             return String.fromCharCode( tmpStr.charCodeAt(0) + 0xFEE0 ); 
             }); 
@@ -83,7 +84,7 @@ function memberInfoUpdate() {
     //国内住所で、電話番号がハイフン無しで入力されている場合、0を先頭に足す
     phoneNumber = phoneNumber.toString();
     var phoneNumberOrg = phoneNumber;
-    if(phoneNumber.indexOf("-") < 0 && prefecture !== "海外" && phoneNumber.substr(0,1) !== "0"){
+    if(phoneNumber !== "" && phoneNumber.indexOf("-") < 0 && prefecture !== "海外" && phoneNumber.substr(0,1) !== "0"){
         phoneNumber = "0" + phoneNumber;
         txtContents = txtContents.replace(phoneNumberOrg, phoneNumber);
         inputInfo = inputInfo.replace(phoneNumberOrg, phoneNumber);
@@ -92,7 +93,7 @@ function memberInfoUpdate() {
     //国内第2住所の電話番号が入力されている場合、同様の処理を行う
     phoneNumber2 = phoneNumber2.toString();
     var phoneNumber2Org = phoneNumber2;
-    if(phoneNumber2.indexOf("-") < 0 && prefecture2 !== "海外" && phoneNumber2.substr(0,1) !== "0"){
+    if(phoneNumber2 !== "" && phoneNumber2.indexOf("-") < 0 && prefecture2 !== "海外" && phoneNumber2.substr(0,1) !== "0"){
         phoneNumber2 = "0" + phoneNumber2;
         txtContents = txtContents.replace(phoneNumber2Org, phoneNumber2);
         inputInfo = inputInfo.replace(phoneNumber2Org, phoneNumber2);
