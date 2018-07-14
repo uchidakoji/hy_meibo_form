@@ -109,7 +109,8 @@ function memberInfoUpdateBulk() {
             + mailFrom;
         var emailBody = "<body style= \"font-family:helvetica,arial,meiryo,sans-serif;font-size:10.5pt\">"　+ message + "<p style= \"font-family:helvetica,arial,meiryo,sans-serif;font-size:9pt\">" + inputInfo + "</p></body>";
         var subject = kaisei + "回生 " + name + " 様 会員情報変更の届け出ありがとうございました。";
-            
+        
+        /* Bulk Update は会員へメール送信しない
         //　会員宛への受付確認メール送信
         MailApp.sendEmail({            
             to: emailAddress,
@@ -118,6 +119,7 @@ function memberInfoUpdateBulk() {
             replyTo: replyToAddress,
             name: mailFrom            
         });
+        */
         
         //　グループ宛へのメール送信
         var emailBodyToGroup = "<body style= \"font-family:helvetica,arial,meiryo,sans-serif;font-size:10.5pt\">"　+ kaisei + "回生 " + name + " 様 より会員情報変更の届出を受付けました。"
@@ -138,7 +140,7 @@ function memberInfoUpdateBulk() {
             attachments: [blob.getAs(MimeType.PLAIN_TEXT)]        
         });
 
-        updateSheet.getRange(row, 1).setValue("yes")　//　処理が終わった行のA列に処理済みのフラグをたてる
+        updateSheet.getRange(row, 1).setValue("yesB")　//　処理が終わった行のA列に処理済みのフラグをたてる
     }
 
 }
