@@ -58,8 +58,10 @@ function memberInfoUpdate() {
             var phoneNumber2 = memberValue
         }
         
+        if (headerValue !== "メーリングリスト登録作業") {
         txtContents = txtContents + "[" + headerValue + "] " + memberValue + "\r\n";
         inputInfo = inputInfo + "[" + headerValue + "] " + memberValue + "<br/>";
+        }
     }
 
     // 国内住所で、郵便番号にハイフンが入っていない場合、ハイフンを足す
